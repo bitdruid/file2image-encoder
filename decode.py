@@ -1,5 +1,6 @@
 import base64
 import sys
+import zlib
 import PIL.Image
 
 # all grey scale colors with 8 bit depth and very light
@@ -78,7 +79,8 @@ def decode(encoded_filename, encoded_content):
     try:
         decoded_filename = base64.b64decode(encoded_filename).decode("utf-8")
         with open(decoded_filename, "wb") as file:
-            decoded_content = base64.b64decode(encoded_content)
+            decoded_content = zlib.decompress(base64.b64decode(encoded_content))
+            #decoded_content = base64.b64decode(encoded_content)
             file.write(decoded_content)
     except Exception as e:
         print(e)

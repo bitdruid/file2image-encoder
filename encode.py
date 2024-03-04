@@ -2,6 +2,7 @@ import base64
 import sys
 import os
 import math
+import zlib
 import PIL.Image
 
 # all grey scale colors with 8 bit depth and very light
@@ -82,7 +83,8 @@ def encode(filepath):
         filename = base64.b64encode(filename.encode("utf-8"))
         with open(filepath, "rb") as file:
             file_content = file.read()
-            encoded_file = filename + b"\n\r" + base64.b64encode(file_content)
+            file_content_compressed = zlib.compress(file_content, 9)
+            encoded_file = filename + b"\n\r" + base64.b64encode(file_content_compressed)
     except FileNotFoundError:
         print(f"File '{filepath}' not found.")
     
