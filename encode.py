@@ -80,11 +80,14 @@ B64_RGB_DICT = {
 def encode_hex(filepath):
     try:
         filename = os.path.basename(filepath) + "\n\r"
-        filename = filename.encode("utf-8").hex()
+        #filename_b64 = base64.b64encode(filename.encode("utf-8")).decode("utf-8")
+        filename_b64_hex = filename.hex()
         with open(filepath, "rb") as file:
             file_content = file.read()
-            #file_content_compressed = zlib.compress(file_content, 9)
-            encoded_file = filename + file_content.hex()
+            file_content_compressed = zlib.compress(file_content, 9)
+            #file_content_compressed_b64 = base64.b64encode(file_content_compressed).decode("utf-8")
+            file_content_compressed_b64_hex = file_content_compressed.hex()
+            encoded_file = filename_b64_hex + file_content_compressed_b64_hex
     except FileNotFoundError:
         print(f"File '{filepath}' not found.")
 
