@@ -4,8 +4,8 @@ import PIL.Image
 
 def decode(encoded_file, output=None):
     try:
-        decoded_filename = bytes.fromhex(encoded_file.split("0a0d")[0]).decode("utf-8")
-        decoded_content = bytes.fromhex(encoded_file.split("0a0d")[1])
+        decoded_filename = bytes.fromhex(encoded_file.split("0a0d", 1)[0]).decode("utf-8")
+        decoded_content = bytes.fromhex(encoded_file.split("0a0d", 1)[1])
         with open("decoded_" + decoded_filename, "wb") as file:
             decoded_content = zlib.decompress(decoded_content)
             file.write(decoded_content)
@@ -16,14 +16,12 @@ def decode(encoded_file, output=None):
         print(f"Line: {line}")
         print(f"Stacktrace: {stacktrace}")
 
-
 def read_image_content(hex_pixel_matrix: list) -> str:
     encoded_file = ""
     for hex_pixel in hex_pixel_matrix:
         encoded_file += hex_pixel
     encoded_file = encoded_file.rsplit("0a0d", 1)[0]
     return encoded_file
-    
 
 def read_image(filepath):
     hex_pixel_matrix = []
